@@ -50,6 +50,12 @@
         "projectId": "ae167634-f1fd-443c-88cb-27a268013c3d"
       }
     },
-    "owner": "apknusel"
+    "owner": "apknusel",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ae167634-f1fd-443c-88cb-27a268013c3d"
+    }
   }
 }
