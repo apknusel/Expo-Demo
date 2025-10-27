@@ -159,7 +159,6 @@ export default function FeaturesScreen() {
         Cross‑platform APIs with graceful fallbacks.
       </ThemedText>
 
-      <View style={{ gap: 16 }}>
         <Card title="Camera + Share" subtitle="Capture a photo and share it">
           <View style={styles.row}>
             <Button title="Capture photo" onPress={takePhoto} />
@@ -187,12 +186,12 @@ export default function FeaturesScreen() {
         </Card>
 
       {/* Notifications */}
-      <Section title="Remind me in 5s (Only works in Dev Build)">
+      <Card title="Remind me in 5s (Only works in Dev Build)">
         <Button title="Schedule notification" onPress={scheduleNotification} />
         <ThemedText style={styles.caption}>
           Uses expo-notifications; permissions prompted as needed.
         </ThemedText>
-      </Section>
+      </Card>
 
         <Card title="Shake/Wave (Accelerometer)" subtitle="Live sensor readings">
           <View style={styles.sensorRow}>
@@ -210,7 +209,7 @@ export default function FeaturesScreen() {
         </Card>
 
       {/* Barometer */}
-      <Section title="Air pressure (Barometer)">
+      <Card title="Air pressure (Barometer)">
         <ThemedText>
           {baroAvailable === false
             ? 'Barometer not available on this device'
@@ -224,26 +223,26 @@ export default function FeaturesScreen() {
         <ThemedText style={styles.caption}>
           Uses expo-sensors Barometer; no special permissions required.
         </ThemedText>
-      </Section>
+      </Card>
 
       {/* Battery */}
-      <Section title="Battery">
+      <Card title="Battery">
         <ThemedText>
           Level: {batteryLevel != null ? `${Math.round(batteryLevel * 100)}%` : '...'}
         </ThemedText>
         <ThemedText>State: {batteryStateLabel}</ThemedText>
         {lowPower != null && <ThemedText>Low Power Mode: {lowPower ? 'On' : 'Off'}</ThemedText>}
         <ThemedText style={styles.caption}>Uses expo-battery; no permissions required.</ThemedText>
-      </Section>
+      </Card>
 
       {/* Biometrics */}
-      <Section title="Authenticate (Biometrics)">
+      <Card title="Authenticate (Biometrics)">
         <Button title="Authenticate" onPress={authenticate} />
         {!!authResult && <ThemedText>{authResult}</ThemedText>}
         <ThemedText style={styles.caption}>
           Uses expo-local-authentication (Face ID / Touch ID / Android biometrics).
         </ThemedText>
-      </Section>
+      </Card>
     </ScrollView>
   );
 }
@@ -275,5 +274,9 @@ const styles = StyleSheet.create({
   emoji: {
     width: 48,
     height: 48,
+  },
+  caption: {
+    fontSize: 12,
+    opacity: 0.8,
   },
 });
