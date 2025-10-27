@@ -7,14 +7,14 @@ import * as Notifications from 'expo-notifications';
 import { Accelerometer } from 'expo-sensors';
 import * as Sharing from 'expo-sharing';
 import { useEffect, useMemo, useState } from 'react';
-import { Button as RNButton, Platform, Image as RNImage, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, Image as RNImage, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors } from '@/constants/theme';
 import { AppHeader } from '@/components/ui/app-header';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Colors } from '@/constants/theme';
 
 export default function FeaturesScreen() {
   // Camera / Sharing
@@ -72,7 +72,7 @@ export default function FeaturesScreen() {
     }
     await Notifications.scheduleNotificationAsync({
       content: { title: '⏰ Reminder', body: 'This is your 5s reminder!' },
-      trigger: { seconds: 5 },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 5 },
     });
     alert('Scheduled a local notification for 5 seconds from now');
   };
