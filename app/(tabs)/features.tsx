@@ -1,10 +1,11 @@
+import * as Battery from 'expo-battery';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
 import * as LocalAuthentication from 'expo-local-authentication';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
-import { Accelerometer } from 'expo-sensors';
+import { Accelerometer, Barometer } from 'expo-sensors';
 import * as Sharing from 'expo-sharing';
 import { useEffect, useMemo, useState } from 'react';
 import { Button, Platform, Image as RNImage, ScrollView, StyleSheet, View } from 'react-native';
@@ -88,10 +89,53 @@ export default function FeaturesScreen() {
     return () => sub && sub.remove();
   }, []);
   const tiltDeg = useMemo(() => {
-    // Rotate based on x axis, clamped to [-1, 1] => [-45deg, 45deg]
     const clamped = Math.max(-1, Math.min(1, accel.x));
     return `${(clamped * 45).toFixed(0)}deg`;
   }, [accel.x]);
+
+  // Barometer
+  const [baroAvailable, setBaroAvailable] = useState<boolean | null>(null);
+  const [baro, setBaro] = useState<{ pressure: number; relativeAltitude?: number } | null>(null);
+  useEffect(() => {
+    let sub: { remove: () => void } | null = null;
+    Barometer.isAvailableAsync().then(setBaroAvailable);
+    sub = Barometer.addListener((data) => setBaro(data));
+    return () => sub?.remove();
+  }, []);
+
+  // Battery
+  const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
+  const [batteryState, setBatteryState] = useState<Battery.BatteryState | null>(null);
+  const [lowPower, setLowPower] = useState<boolean | null>(null);
+  useEffect(() => {
+    let subs: { remove: () => void }[] = [];
+    Battery.getBatteryLevelAsync().then(setBatteryLevel);
+    Battery.getBatteryStateAsync().then(setBatteryState);
+    Battery.isLowPowerModeEnabledAsync().then(setLowPower);
+
+    subs.push(
+      Battery.addBatteryLevelListener(({ batteryLevel }) => setBatteryLevel(batteryLevel))
+    );
+    subs.push(
+      Battery.addBatteryStateListener(({ batteryState }) => setBatteryState(batteryState))
+    );
+    subs.push(Battery.addLowPowerModeListener(({ lowPowerMode }) => setLowPower(lowPowerMode)));
+
+    return () => subs.forEach((s) => s.remove());
+  }, []);
+  const batteryStateLabel = useMemo(() => {
+    switch (batteryState) {
+      case Battery.BatteryState.UNPLUGGED:
+        return 'Unplugged';
+      case Battery.BatteryState.CHARGING:
+        return 'Charging';
+      case Battery.BatteryState.FULL:
+        return 'Full';
+      case Battery.BatteryState.UNKNOWN:
+      default:
+        return 'Unknown';
+    }
+  }, [batteryState]);
 
   // Biometrics
   const [authResult, setAuthResult] = useState<string | null>(null);
@@ -148,7 +192,7 @@ export default function FeaturesScreen() {
       </Section>
 
       {/* Notifications */}
-      <Section title="Remind me in 5s (Local notification)">
+      <Section title="Remind me in 5s (Only works in Dev Build)">
         <Button title="Schedule notification" onPress={scheduleNotification} />
         <ThemedText style={styles.caption}>
           Uses expo-notifications; permissions prompted as needed.
@@ -171,6 +215,33 @@ export default function FeaturesScreen() {
             Tilt your device to rotate the hand. Uses expo-sensors.
           </ThemedText>
         </ThemedView>
+      </Section>
+
+      {/* Barometer */}
+      <Section title="Air pressure (Barometer)">
+        <ThemedText>
+          {baroAvailable === false
+            ? 'Barometer not available on this device'
+            : baro
+            ? `Pressure: ${baro.pressure.toFixed(1)} hPa`
+            : 'Waiting for data...'}
+        </ThemedText>
+        {!!baro?.relativeAltitude && (
+          <ThemedText>Relative altitude: {baro.relativeAltitude.toFixed(2)} m</ThemedText>
+        )}
+        <ThemedText style={styles.caption}>
+          Uses expo-sensors Barometer; no special permissions required.
+        </ThemedText>
+      </Section>
+
+      {/* Battery */}
+      <Section title="Battery">
+        <ThemedText>
+          Level: {batteryLevel != null ? `${Math.round(batteryLevel * 100)}%` : '...'}
+        </ThemedText>
+        <ThemedText>State: {batteryStateLabel}</ThemedText>
+        {lowPower != null && <ThemedText>Low Power Mode: {lowPower ? 'On' : 'Off'}</ThemedText>}
+        <ThemedText style={styles.caption}>Uses expo-battery; no permissions required.</ThemedText>
       </Section>
 
       {/* Biometrics */}
