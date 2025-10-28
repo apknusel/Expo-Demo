@@ -8,7 +8,7 @@ import * as Notifications from 'expo-notifications';
 import { Accelerometer, Barometer } from 'expo-sensors';
 import * as Sharing from 'expo-sharing';
 import { useEffect, useMemo, useState } from 'react';
-import { Platform, Image as RNImage, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -200,9 +200,10 @@ export default function FeaturesScreen() {
           <ThemedText>z: {accel.z.toFixed(2)}</ThemedText>
         </View>
         <ThemedView style={styles.emojiCard}>
-          <RNImage
-            source={{ uri: 'https://twemoji.maxcdn.com/v/latest/svg/1f44b.svg' }}
+          <Image
+            source={{ uri: 'https://twemoji.maxcdn.com/v/latest/72x72/1f44b.png' }}
             style={[styles.emoji, { transform: [{ rotate: tiltDeg }] }]}
+            contentFit="contain"
           />
           <ThemedText type="caption">Tilt your device to rotate the hand.</ThemedText>
         </ThemedView>
