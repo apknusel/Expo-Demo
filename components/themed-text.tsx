@@ -15,7 +15,10 @@ export function ThemedText({
   type = 'default',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, type === 'muted' ? 'muted' : 'text');
+  const color = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    type === 'muted' ? 'muted' : 'text'
+  );
 
   return (
     <Text
@@ -45,14 +48,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    fontSize: 28,
-    fontWeight: '800',
+    fontSize: 32,
+    fontWeight: 'bold',
     lineHeight: 32,
-    letterSpacing: 0.2,
   },
   subtitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   link: {
     lineHeight: 30,
@@ -61,6 +63,7 @@ const styles = StyleSheet.create({
   },
   caption: {
     fontSize: 12,
-    opacity: 0.7,
+    lineHeight: 16,
+    opacity: 0.8,
   },
 });
