@@ -15,7 +15,6 @@ export function ThemedText({
   type = 'default',
   ...rest
 }: ThemedTextProps) {
-  // Use muted color token for "muted", otherwise default to text
   const color = useThemeColor(
     { light: lightColor, dark: darkColor },
     type === 'muted' ? 'muted' : 'text'

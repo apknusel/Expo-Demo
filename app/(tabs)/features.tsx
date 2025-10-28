@@ -8,13 +8,15 @@ import * as Notifications from 'expo-notifications';
 import { Accelerometer, Barometer } from 'expo-sensors';
 import * as Sharing from 'expo-sharing';
 import { useEffect, useMemo, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
+import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { AppHeader } from '@/components/ui/app-header';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 
 export default function FeaturesScreen() {
@@ -153,11 +155,17 @@ export default function FeaturesScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ParallaxScrollView
+      headerBackgroundColor={{ light: '#FDE68A', dark: '#1F2937' }}
+      headerImage={
+        <IconSymbol
+          size={310}
+          color="#808080"
+          name="bolt.fill"
+          style={styles.headerImage}
+        />
+      }>
       <AppHeader title="Features" />
-      <ThemedText type="muted" style={{ marginBottom: 8 }}>
-        Cross‑platform APIs with graceful fallbacks.
-      </ThemedText>
 
       <Card title="Camera + Share" subtitle="Capture a photo and share it">
         <View style={styles.row}>
@@ -244,18 +252,20 @@ export default function FeaturesScreen() {
           Uses expo-local-authentication (Face ID / Touch ID / Android biometrics).
         </ThemedText>
       </Card>
-    </ScrollView>
+    </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    gap: 16,
-  },
   row: {
     flexDirection: 'row',
     gap: 8,
+  },
+  headerImage: {
+    color: '#808080',
+    bottom: -90,
+    left: -35,
+    position: 'absolute',
   },
   photoPreview: {
     width: '100%',
