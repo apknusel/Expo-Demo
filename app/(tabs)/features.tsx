@@ -4,7 +4,6 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
 import * as LocalAuthentication from 'expo-local-authentication';
 import * as Location from 'expo-location';
-import * as Notifications from 'expo-notifications';
 import { Accelerometer, Barometer } from 'expo-sensors';
 import * as Sharing from 'expo-sharing';
 import { useEffect, useMemo, useState } from 'react';
@@ -64,20 +63,6 @@ export default function FeaturesScreen() {
         default: `https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`,
       }) ?? `https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`;
     Linking.openURL(url);
-  };
-
-  // Notifications
-  const scheduleNotification = async () => {
-    const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Notification permission is required');
-      return;
-    }
-    await Notifications.scheduleNotificationAsync({
-      content: { title: '⏰ Reminder', body: 'This is your 5s reminder!' },
-      trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 5 },
-    });
-    alert('Scheduled a local notification for 5 seconds from now');
   };
 
   // Sensors (Accelerometer)
@@ -191,14 +176,6 @@ export default function FeaturesScreen() {
             : 'No location yet'}
         </ThemedText>
         <ThemedText type="caption">Uses expo-location; opens native or Google Maps.</ThemedText>
-      </Card>
-
-      {/* Notifications */}
-      <Card title="Remind me in 5s (Only works in Dev Build)">
-        <Button title="Schedule notification" onPress={scheduleNotification} />
-        <ThemedText style={styles.caption}>
-          Uses expo-notifications; permissions prompted as needed.
-        </ThemedText>
       </Card>
 
       <Card title="Shake/Wave (Accelerometer)" subtitle="Live sensor readings">

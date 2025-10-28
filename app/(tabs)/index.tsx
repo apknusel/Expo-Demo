@@ -4,11 +4,10 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
 import { AppHeader } from '@/components/ui/app-header';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Link } from 'expo-router';
 
 export default function HomeScreen() {
   return (
@@ -36,7 +35,7 @@ export default function HomeScreen() {
           <HelloWave />
         </Card>
 
-        <Card title="Try the features" subtitle="Camera, Sharing, Location, Notifications, Sensors, Biometrics">
+        <Card title="Try the features" subtitle="Camera, Sharing, Location, Sensors, Biometrics">
           <Link href="/features" asChild>
             <Button title="Open Features" variant="primary" />
           </Link>
