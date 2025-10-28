@@ -29,7 +29,7 @@ export default function FeaturesScreen() {
     const res = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       quality: 0.8,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images', 'videos', 'livePhotos'],
     });
     if (!res.canceled) setPhotoUri(res.assets[0].uri);
   };
@@ -159,31 +159,31 @@ export default function FeaturesScreen() {
         Cross‑platform APIs with graceful fallbacks.
       </ThemedText>
 
-        <Card title="Camera + Share" subtitle="Capture a photo and share it">
-          <View style={styles.row}>
-            <Button title="Capture photo" onPress={takePhoto} />
-            <Button title="Share" onPress={sharePhoto} variant="outline" />
-          </View>
-          {photoUri && (
-            <Image source={{ uri: photoUri }} style={styles.photoPreview} contentFit="cover" />
-          )}
-          <ThemedText type="caption">
-            Uses expo-image-picker and expo-sharing. Sharing may be unavailable on web.
-          </ThemedText>
-        </Card>
+      <Card title="Camera + Share" subtitle="Capture a photo and share it">
+        <View style={styles.row}>
+          <Button title="Capture photo" onPress={takePhoto} />
+          <Button title="Share" onPress={sharePhoto} variant="outline" />
+        </View>
+        {photoUri && (
+          <Image source={{ uri: photoUri }} style={styles.photoPreview} contentFit="cover" />
+        )}
+        <ThemedText type="caption">
+          Uses expo-image-picker and expo-sharing. Sharing may be unavailable on web.
+        </ThemedText>
+      </Card>
 
-        <Card title="Find me (Location)" subtitle="Get coordinates and open Maps">
-          <View style={styles.row}>
-            <Button title="Get location" onPress={getLocation} />
-            <Button title="Open in Maps" onPress={openInMaps} variant="outline" />
-          </View>
-          <ThemedText>
-            {coords
-              ? `Latitude: ${coords.latitude.toFixed(5)}, Longitude: ${coords.longitude.toFixed(5)}`
-              : 'No location yet'}
-          </ThemedText>
-          <ThemedText type="caption">Uses expo-location; opens native or Google Maps.</ThemedText>
-        </Card>
+      <Card title="Find me (Location)" subtitle="Get coordinates and open Maps">
+        <View style={styles.row}>
+          <Button title="Get location" onPress={getLocation} />
+          <Button title="Open in Maps" onPress={openInMaps} variant="outline" />
+        </View>
+        <ThemedText>
+          {coords
+            ? `Latitude: ${coords.latitude.toFixed(5)}, Longitude: ${coords.longitude.toFixed(5)}`
+            : 'No location yet'}
+        </ThemedText>
+        <ThemedText type="caption">Uses expo-location; opens native or Google Maps.</ThemedText>
+      </Card>
 
       {/* Notifications */}
       <Card title="Remind me in 5s (Only works in Dev Build)">
@@ -193,20 +193,20 @@ export default function FeaturesScreen() {
         </ThemedText>
       </Card>
 
-        <Card title="Shake/Wave (Accelerometer)" subtitle="Live sensor readings">
-          <View style={styles.sensorRow}>
-            <ThemedText>x: {accel.x.toFixed(2)}</ThemedText>
-            <ThemedText>y: {accel.y.toFixed(2)}</ThemedText>
-            <ThemedText>z: {accel.z.toFixed(2)}</ThemedText>
-          </View>
-          <ThemedView style={styles.emojiCard}>
-            <RNImage
-              source={{ uri: 'https://twemoji.maxcdn.com/v/latest/svg/1f44b.svg' }}
-              style={[styles.emoji, { transform: [{ rotate: tiltDeg }] }]}
-            />
-            <ThemedText type="caption">Tilt your device to rotate the hand.</ThemedText>
-          </ThemedView>
-        </Card>
+      <Card title="Shake/Wave (Accelerometer)" subtitle="Live sensor readings">
+        <View style={styles.sensorRow}>
+          <ThemedText>x: {accel.x.toFixed(2)}</ThemedText>
+          <ThemedText>y: {accel.y.toFixed(2)}</ThemedText>
+          <ThemedText>z: {accel.z.toFixed(2)}</ThemedText>
+        </View>
+        <ThemedView style={styles.emojiCard}>
+          <RNImage
+            source={{ uri: 'https://twemoji.maxcdn.com/v/latest/svg/1f44b.svg' }}
+            style={[styles.emoji, { transform: [{ rotate: tiltDeg }] }]}
+          />
+          <ThemedText type="caption">Tilt your device to rotate the hand.</ThemedText>
+        </ThemedView>
+      </Card>
 
       {/* Barometer */}
       <Card title="Air pressure (Barometer)">
@@ -214,8 +214,8 @@ export default function FeaturesScreen() {
           {baroAvailable === false
             ? 'Barometer not available on this device'
             : baro
-            ? `Pressure: ${baro.pressure.toFixed(1)} hPa`
-            : 'Waiting for data...'}
+              ? `Pressure: ${baro.pressure.toFixed(1)} hPa`
+              : 'Waiting for data...'}
         </ThemedText>
         {!!baro?.relativeAltitude && (
           <ThemedText>Relative altitude: {baro.relativeAltitude.toFixed(2)} m</ThemedText>
